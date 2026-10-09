@@ -1,0 +1,101 @@
+---
+import Base from '../layouts/Base.astro';
+
+const products = [
+  {
+    name: '升學雷達',
+    sub: 'admission-radar',
+    desc: '台灣升學資訊的即時雷達。依學校或主題訂閱，有新消息就推播給你。',
+    who: '給關心升學的學生與家長。',
+    href: 'https://admission-radar.com',
+  },
+  {
+    name: 'TunnelBox',
+    sub: '桌面 App',
+    desc: '用 Cloudflare Tunnel 把本機的靜態網站分享出去。有 Free 與 Pro 兩種方案。',
+    who: '給想快速分享本機網站的開發者與設計師。',
+    href: 'https://tunnelbox.zhiri.app',
+  },
+];
+---
+<Base>
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="container">
+      <h1 id="hero-title">像值日生一樣，每天守著一件該做的小事。</h1>
+      <p class="lead">台灣的獨立開發者工作室，做自己會每天用的工具。</p>
+      <div class="actions">
+        <a class="btn primary" href="#products">看看產品</a>
+        <a class="btn ghost" href="mailto:support@zhiri.app">聯絡我們</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="block" aria-labelledby="about-title">
+    <div class="container narrow">
+      <h2 id="about-title">關於</h2>
+      <p>值日工作室在台灣，由獨立開發者經營。目前有兩個產品正式營運，都是我們自己每天在用的東西。</p>
+      <p>名字來自值日生。輪到你的那天，就把該做的那件小事做完。</p>
+      <p>我們把產品做小，然後一直維護下去。使用者資料只收運作需要的那些。</p>
+    </div>
+  </section>
+
+  <section id="products" class="block" aria-labelledby="products-title">
+    <div class="container">
+      <h2 id="products-title">產品</h2>
+      <ul class="cards">
+        {products.map((p) => (
+          <li class="card">
+            <div class="card-head">
+              <h3>{p.name}</h3>
+              <span class="tag">正式營運</span>
+            </div>
+            <p class="sub">{p.sub}</p>
+            <p>{p.desc}</p>
+            <p class="who">{p.who}</p>
+            <a class="more" href={p.href} target="_blank" rel="noopener">前往 {p.href.replace('https://', '')}</a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section id="contact" class="block" aria-labelledby="contact-title">
+    <div class="container narrow">
+      <h2 id="contact-title">聯絡</h2>
+      <p>有問題或想合作，直接寫信。</p>
+      <a class="mail" href="mailto:support@zhiri.app">support@zhiri.app</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero { padding-block: clamp(64px, 14vw, 140px) clamp(48px, 10vw, 96px); border-bottom: 1px solid var(--line); }
+  h1 { font-size: var(--fs-hero); max-width: 18ch; }
+  .lead { margin-top: 20px; color: var(--fg-muted); font-size: var(--fs-lg); max-width: 36ch; }
+  .actions { margin-top: 36px; display: flex; flex-wrap: wrap; gap: 12px; }
+  .btn {
+    display: inline-block; padding: 12px 24px; border-radius: 8px;
+    font-weight: 700; text-decoration: none; border: 1px solid transparent;
+    transition: background-color 0.15s;
+  }
+  .primary { background: var(--accent); color: var(--accent-fg); }
+  .primary:hover { background: #ffc766; }
+  .ghost { border-color: var(--line); color: var(--fg); }
+  .ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+  .block { padding-block: clamp(48px, 9vw, 88px); border-bottom: 1px solid var(--line); }
+  .narrow > p, .narrow > .mail { max-width: 720px; }
+  .block h2 { font-size: var(--fs-2xl); margin-bottom: 24px; }
+  .block p + p { margin-top: 12px; }
+
+  .cards { list-style: none; padding: 0; display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); }
+  .card { background: var(--bg-elev); border: 1px solid var(--line); border-radius: 12px; padding: 24px; display: flex; flex-direction: column; gap: 8px; }
+  .card-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .card h3 { font-size: var(--fs-xl); }
+  .tag { font-size: 0.75rem; font-weight: 500; padding: 2px 10px; border: 1px solid var(--accent); color: var(--accent); border-radius: 999px; white-space: nowrap; }
+  .sub { color: var(--fg-muted); font-size: var(--fs-sm); margin: 0; }
+  .who { color: var(--fg-muted); font-size: var(--fs-sm); }
+  .more { margin-top: auto; padding-top: 12px; font-weight: 500; }
+
+  .mail { display: inline-block; margin-top: 20px; font-size: clamp(1.25rem, 5vw, 1.75rem); font-weight: 700; }
+</style>

@@ -1,0 +1,119 @@
+---
+import '../styles/global.css';
+import { cfBeaconToken } from '../config';
+
+interface Props {
+  title?: string;
+  description?: string;
+  noindex?: boolean;
+}
+
+const siteName = '值日工作室';
+const defaultDesc = '值日工作室是台灣的獨立開發者工作室，做自己每天會用的工具。';
+const { title, description = defaultDesc, noindex = false } = Astro.props;
+const fullTitle = title ? `${title}｜${siteName}` : `${siteName} zhiri`;
+const canonical = new URL(Astro.url.pathname, 'https://zhiri.app').href;
+const ogImage = 'https://zhiri.app/og.png';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: '值日工作室',
+  alternateName: 'zhiri',
+  url: 'https://zhiri.app',
+  email: 'support@zhiri.app',
+  logo: 'https://zhiri.app/og.png',
+};
+
+const nav = [
+  { href: '/#about', label: '關於' },
+  { href: '/#products', label: '產品' },
+  { href: '/#contact', label: '聯絡' },
+];
+---
+<!doctype html>
+<html lang="zh-Hant-TW">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#0b0f14" />
+    {noindex && <meta name="robots" content="noindex" />}
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content="zh_TW" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    {cfBeaconToken !== '' && (
+      <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon={JSON.stringify({ token: cfBeaconToken })}></script>
+    )}
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container bar">
+        <a class="wordmark" href="/" aria-label="值日 zhiri，回首頁">
+          <span class="zh">值日</span><span class="en">zhiri</span>
+        </a>
+        <nav aria-label="主選單">
+          <ul>
+            {nav.map((n) => <li><a href={n.href}>{n.label}</a></li>)}
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main"><slot /></main>
+
+    <footer class="site-footer">
+      <div class="container foot">
+        <p>© 2026 值日工作室</p>
+        <p><a href="mailto:support@zhiri.app">support@zhiri.app</a></p>
+        <p class="links"><a href="/privacy">隱私權政策</a><a href="/terms">服務條款</a></p>
+      </div>
+    </footer>
+  </body>
+</html>
+
+<style>
+  .site-header {
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(11, 15, 20, 0.92);
+    border-bottom: 1px solid var(--line);
+    backdrop-filter: blur(8px);
+  }
+  .bar { display: flex; align-items: center; justify-content: space-between; min-height: 60px; gap: 12px; }
+  .wordmark { display: inline-flex; align-items: baseline; gap: 8px; color: var(--fg); text-decoration: none; }
+  .wordmark .zh { font-size: 1.5rem; font-weight: 700; line-height: 1; }
+  .wordmark .en { font-size: var(--fs-sm); color: var(--fg-muted); letter-spacing: 0.08em; }
+  nav ul { list-style: none; padding: 0; display: flex; gap: 4px; }
+  nav a {
+    display: inline-block; padding: 8px 10px; color: var(--fg-muted);
+    text-decoration: none; font-size: var(--fs-sm); font-weight: 500;
+  }
+  nav a:hover { color: var(--accent); }
+  .site-footer { border-top: 1px solid var(--line); padding-block: 32px; color: var(--fg-muted); font-size: var(--fs-sm); }
+  .foot { display: flex; flex-wrap: wrap; gap: 8px 24px; align-items: center; justify-content: space-between; }
+  .foot p { margin: 0; }
+  .links { display: flex; gap: 16px; }
+  .site-footer a { color: var(--fg-muted); }
+  .site-footer a:hover { color: var(--accent); }
+</style>
